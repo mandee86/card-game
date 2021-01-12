@@ -17,6 +17,8 @@ const DeckContainer = ({
   setSelectCard,
   winnerCards,
   deckSize,
+  best,
+  setBestNum,
   restart,
   showModal
 }) => {
@@ -48,6 +50,15 @@ const DeckContainer = ({
     setSelectCard(card)
   }
 
+  // get biggest number from best array
+  const getBest = (best) => {
+    if(best.length <= 0) {
+      return 0;
+    }
+    var bestNumber = Math.min(...best)
+    return bestNumber;
+  }
+
   return (
     <Layout
       headerChildren={
@@ -68,13 +79,15 @@ const DeckContainer = ({
             </span>
           </div>
           <div>
-            <span>Best: 9</span>
+            <span>Best: {getBest(best)}</span>
           </div>
           <div>
             <button
               onClick={() => {
                 restart(deckSize);
                 setCurrentTries(0);
+                setBestNum([...best, getCurrentTriesNumber()]);
+                localStorage.setItem('best', JSON.stringify([...best, getCurrentTriesNumber()]));
               }}
               className="btn btn--transparent"
             >
@@ -83,7 +96,6 @@ const DeckContainer = ({
           </div>
         </div>
         <div className="card-list">
-          {console.log(cards)}
           {cards.map(card => {
             return (
               <Card

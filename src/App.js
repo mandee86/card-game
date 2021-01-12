@@ -24,9 +24,10 @@ const App = () => {
   }
 
   const [deckSize, setDeckSize] = useState(+localStorage.getItem('deckSize') || 20);
-  const [cards, setCards] = useState(JSON.parse(localStorage.getItem('cards')) || shuffleArray(memoryCardsArray()));
+  const [cards, setCards] = useState(JSON.parse(localStorage.getItem('cards')) || []);
   const [selectedCards, setSelectedCards] = useState(JSON.parse(localStorage.getItem('selectedCards')) || []);
   const [winnerCards, setWinnerCards] = useState(JSON.parse(localStorage.getItem('winnerCards')) || []);
+  const [best, setBest] = useState(JSON.parse(localStorage.getItem('best')) || []);
 
   // handle selectedCards and winnerCards on selectedCards change
   useEffect(() => {
@@ -39,6 +40,12 @@ const App = () => {
         setSelectedCards([])
         localStorage.setItem('selectedCards', JSON.stringify([]));
       }, 500);
+    }
+
+    if(localStorage.getItem('cards') === null) {
+      const shuffledArray = shuffleArray(memoryCardsArray());
+      localStorage.setItem('cards', JSON.stringify(shuffledArray));
+      setCards(shuffledArray)
     }
   }, [selectedCards]);
 
@@ -71,6 +78,8 @@ const App = () => {
     setWinnerCards([]);
     localStorage.setItem('winnerCards', JSON.stringify([]));
     handleSetDeck(selectedOption)
+    setBest([])
+    localStorage.setItem('best', JSON.stringify([]));
   }
 
   // navigate to link
@@ -103,6 +112,8 @@ const App = () => {
             selectedCards={selectedCards}
             setSelectCard={handleSelectCard}
             winnerCards={winnerCards}
+            best={best}
+            setBestNum={(val) => setBest(val)}
 
             // start settings
             restart={(selectedOption) => restartTheGame(selectedOption)}

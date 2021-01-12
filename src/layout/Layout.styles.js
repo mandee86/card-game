@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { Colors } from '../styles/theme/Theme.styles'
 
 export const StyledLayout = styled.div`
   display: flex;
