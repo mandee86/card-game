@@ -64,6 +64,15 @@ const App = () => {
     }
   }
 
+  // restart the game
+  const restartTheGame = (selectedOption) => {
+    setSelectedCards([]);
+    localStorage.setItem('selectedCards', JSON.stringify([]));
+    setWinnerCards([]);
+    localStorage.setItem('winnerCards', JSON.stringify([]));
+    handleSetDeck(selectedOption)
+  }
+
   // navigate to link
   const handleNavigate = (link) => {
     navigate(link);
@@ -81,11 +90,7 @@ const App = () => {
           <StartContainer
             path="/start"
             restart={(selectedOption) => {
-              setSelectedCards([]);
-              localStorage.setItem('selectedCards', JSON.stringify([]));
-              setWinnerCards([]);
-              localStorage.setItem('winnerCards', JSON.stringify([]));
-              handleSetDeck(selectedOption)
+              restartTheGame(selectedOption)
               handleNavigate('/game')
             }}
             deckSize={deckSize}
@@ -100,25 +105,13 @@ const App = () => {
             winnerCards={winnerCards}
 
             // start settings
-            restart={(selectedOption) => {
-              setSelectedCards([]);
-              localStorage.setItem('selectedCards', JSON.stringify([]));
-              setWinnerCards([]);
-              localStorage.setItem('winnerCards', JSON.stringify([]));
-              handleSetDeck(selectedOption)
-            }}
+            restart={(selectedOption) => restartTheGame(selectedOption)}
             deckSize={deckSize}
 
             // modal
             showModal = {+winnerCards.length === +deckSize}
           />
         </Router>
-
-        
-
-        {/* {(+winnerCards.length === +deckSize) && (
-          setShowModal(true)
-        )} */}
       </div>
     </>
   );
